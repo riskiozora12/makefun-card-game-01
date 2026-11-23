@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>Lantern Duel — a card duel of light and ash</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- Top bar -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-lantern" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2 L15 8 H9 Z" fill="#f6c453"/><rect x="8" y="9" width="8" height="11" rx="2" fill="#f6c453" opacity="0.85"/><rect x="10" y="20" width="4" height="2" fill="#f6c453"/></svg>
+      </span>
+      <span class="brand-name">LANTERN DUEL</span>
+      <span class="brand-sub">a duel of light and ash</span>
+    </div>
+    <div class="top-actions">
+      <span id="turn-badge" class="turn-badge">Your turn</span>
+      <button id="btn-sound" class="icon-btn" title="Sound on/off">🔊</button>
+      <button id="btn-help" class="icon-btn" title="How to play">?</button>
+      <button id="btn-restart" class="icon-btn" title="Restart duel">↻</button>
+    </div>
+  </header>
+
+  <!-- Opponent zone -->
+  <section id="opp-zone" class="zone">
+    <div class="hero-card opp">
+      <div class="avatar">V</div>
+      <div class="hero-info">
+        <div class="hero-name">Vex, the Ash Herald</div>
+        <div class="hp-bar"><div id="opp-hp-fill" class="hp-fill"></div><span id="opp-hp-text" class="hp-text">30 / 30</span></div>
+        <div id="opp-mana" class="mana-row"></div>
+      </div>
+      <div class="deck-pile" title="Opponent deck"><span id="opp-deck-count">26</span><label>deck</label></div>
+    </div>
+    <div id="opp-hand" class="hand-row opp-hand"></div>
+    <div id="opp-board" class="board-row"></div>
+  </section>
+
+  <!-- Middle strip: log + end turn -->
+  <section id="mid-strip">
+    <div id="surge-banner" class="surge-banner hidden">SURGE! Same suit twice — draw a card</div>
+    <div id="log" class="log"></div>
+    <button id="btn-end-turn" class="end-turn">END TURN</button>
+  </section>
+
+  <!-- Player zone -->
+  <section id="player-zone" class="zone">
+    <div id="player-board" class="board-row"></div>
+    <div id="player-hand" class="hand-row"></div>
+    <div class="hero-card you">
+      <div class="avatar you-av">L</div>
+      <div class="hero-info">
+        <div class="hero-name">You, the Lanternkeeper</div>
+        <div class="hp-bar"><div id="you-hp-fill" class="hp-fill"></div><span id="you-hp-text" class="hp-text">30 / 30</span></div>
+        <div id="you-mana" class="mana-row"></div>
+      </div>
+      <div class="deck-pile" title="Your deck"><span id="you-deck-count">26</span><label>deck</label></div>
+    </div>
+  </section>
+
+  <!-- Title overlay -->
+  <div id="title-screen" class="overlay">
+    <div class="panel title-panel">
+      <div class="title-lantern" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="72" height="72"><path d="M32 4 L42 22 H22 Z" fill="#f6c453"/><rect x="20" y="24" width="24" height="30" rx="4" fill="#f6c453" opacity="0.9"/><rect x="26" y="54" width="12" height="5" fill="#f6c453"/><circle cx="32" cy="38" r="7" fill="#fff3c4"/></svg>
+      </div>
+      <h1>LANTERN DUEL</h1>
+      <p class="tagline">Four suits, one deck of thirty cards, and a herald of ash to put out.</p>
+      <p class="rules-short">
+        Play cards with lanterns. Creatures fight on the board; spells strike at once.
+        Play two cards of the same suit in a turn to trigger a <b>Surge</b> and draw a card.
+        Reduce Vex to 0 life before your own light goes out.
+      </p>
+      <button id="btn-play" class="big-btn">LIGHT THE LANTERNS — PLAY</button>
+      <p class="hint">Click a card in your hand to play it · Click your creature, then an enemy, to attack · Guard creatures (Thorn) must be attacked first</p>
+      <p class="credit">An original game · Ember · Tide · Thorn · Gale</p>
+    </div>
+  </div>
+
+  <!-- How to play overlay -->
+  <div id="help-screen" class="overlay hidden">
+    <div class="panel help-panel">
+      <h2>How to play</h2>
+      <ul>
+        <li><b>Goal:</b> reduce Vex, the Ash Herald, from 30 life to 0. If your life hits 0, you lose.</li>
+        <li><b>Lanterns:</b> each turn you gain one more lantern (up to 10) and they refill. Every card costs lanterns — the blue number on its corner.</li>
+        <li><b>Creatures:</b> click a creature card to put it on your board. It can attack from your next turn (unless it has <b>Swift</b>). Click your creature, then click an enemy creature or Vex himself to attack. Creatures fight back when attacked.</li>
+        <li><b>Guard:</b> Thorn creatures with a shield must be attacked before anything else.</li>
+        <li><b>Spells:</b> click a spell, then click its target. Red spells hurt, blue spells heal or draw, yellow spells trick the board.</li>
+        <li><b>Surge:</b> play two cards of the same suit in one turn and you draw a card.</li>
+        <li><b>Fatigue:</b> when your deck runs out, drawing hurts you — 1, then 2, then 3…</li>
+        <li><b>End turn:</b> press END TURN when you are done. Vex plays, then it is your turn again.</li>
+      </ul>
+      <button id="btn-close-help" class="big-btn">BACK TO THE TABLE</button>
+    </div>
+  </div>
+
+  <!-- End overlay -->
+  <div id="end-screen" class="overlay hidden">
+    <div class="panel end-panel">
+      <h1 id="end-title">VICTORY</h1>
+      <p id="end-sub" class="tagline"></p>
+      <div id="end-stats" class="stats"></div>
+      <button id="btn-again" class="big-btn">DUEL AGAIN</button>
+      <p class="hint">The lanterns are relit. Vex is waiting.</p>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
